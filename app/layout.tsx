@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jeet Vasani - Portfolio",
-  description: "Jeet Vasani Portfolio",
+  title: "Tax Fraud Pattern Detection Agentic AI",
+  description: "Tax Fraud Pattern Detection Agentic AI",
     icons: {
     icon: "/icon.png",
   },

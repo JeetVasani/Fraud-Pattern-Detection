@@ -22,7 +22,7 @@ export default function Contact() {
       </div>
 
       <p className="text-xs mt-6 text-gray-400">
-        © {new Date().getFullYear()} Jeet Vasani. All rights reserved.
+        © {new Date().getFullYear()} Iron Legion. All rights reserved.
       </p>
     </section>
   );

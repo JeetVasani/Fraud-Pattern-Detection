@@ -49,7 +49,7 @@ export default function RandomForestPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0F0A1A] flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white/10 backdrop-blur-md rounded-lg p-8 shadow-2xl">
         <h1 className="text-3xl font-bold text-white text-center mb-8">
           Fraud Detection with Random Forest

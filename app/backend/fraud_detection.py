@@ -3,9 +3,19 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
+import sys
 
-# Load the transaction data
-df = pd.read_csv('transactions_10000_realistic_RARE_CYCLES.csv')
+# Load the training data
+df_train = pd.read_csv('app/backend/transactions_10000_realistic_RARE_CYCLES.csv')
+
+# Load the test data from uploaded file
+if len(sys.argv) > 1:
+    test_file = sys.argv[1]
+    df_test = pd.read_csv(test_file)
+else:
+    df_test = df_train.copy()  # Fallback to training data if no file provided
+
+df = df_train  # Use training data for model building
 
 # Compute account-level statistics
 account_stats = df.groupby('from_account').agg(
@@ -56,17 +66,52 @@ rf_model.fit(X_train, y_train)
 # Evaluate on test set
 y_pred = rf_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
-print(f"Model Accuracy on Test Set: {accuracy:.4f}")
 
-# Predict fraud on the full dataset
-df['fraud_probability'] = rf_model.predict_proba(X)[:, 1]
-df['predicted_fraud'] = (df['fraud_probability'] > 0.5).astype(int)
+# Now process the test data
+# Compute account-level statistics for test data
+account_stats_test = df_test.groupby('from_account').agg(
+    transaction_count=('txn_id', 'count'),
+    total_amount=('amount', 'sum')
+).reset_index()
+
+# Merge account stats back to df_test
+df_test = df_test.merge(account_stats_test, on='from_account', how='left')
+
+# Compute account amount stats for outlier detection
+account_amount_stats_test = df_test.groupby('from_account')['amount'].agg(['mean', 'std']).reset_index()
+account_amount_stats_test.rename(columns={'mean': 'avg_amount', 'std': 'std_amount'}, inplace=True)
+df_test = df_test.merge(account_amount_stats_test, on='from_account', how='left')
+df_test['std_amount'] = df_test['std_amount'].fillna(0)  # Handle accounts with single transaction
+
+# Prepare features for test data
+features_test = ['amount', 'kyc_risk', 'transaction_count', 'total_amount', 'avg_amount', 'std_amount']
+
+# Label encode categorical features for test data
+for col in categorical_features:
+    df_test[col + '_encoded'] = le.fit_transform(df_test[col])
+    features_test.append(col + '_encoded')
+
+X_test_data = df_test[features_test]
+
+# Predict fraud on the test dataset
+df_test['fraud_probability'] = rf_model.predict_proba(X_test_data)[:, 1]
+df_test['predicted_fraud'] = (df_test['fraud_probability'] > 0.5).astype(int)
 
 # Flag transactions as predicted fraud
-flagged = df[df['predicted_fraud'] == 1]
+flagged = df_test[df_test['predicted_fraud'] == 1]
 
 # Save flagged transactions to a new CSV
-flagged.to_csv('flagged_transactions.csv', index=False)
+flagged.to_csv('app/backend/flagged_transactions.csv', index=False)
 
-print(f"Flagged {len(flagged)} suspicious transactions out of {len(df)} total transactions.")
-print("Flagged transactions saved to flagged_transactions.csv")
+# Output JSON result (limit flagged data to first 10 for brevity)
+flagged_summary = flagged.head(10).to_dict(orient='records')
+
+result = {
+    'accuracy': accuracy,
+    'total_transactions': len(df_test),
+    'flagged_transactions': len(flagged),
+    'flagged_data': flagged_summary
+}
+
+import json
+print(json.dumps(result))

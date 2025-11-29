@@ -29,10 +29,10 @@ export default function Header() {
         </div>
 
         <div className="hidden md:flex space-x-8 text-[#A78BFA]">
-          <button className="hover:text-white transition" onClick={() => router.push("./components/Graph-Visulaization")}>
+          <button className="hover:text-white transition" onClick={() => router.push("/Graph-Visulaization")}>
             Graph Visulaization
           </button>
-          <button className="hover:text-white transition" onClick={() => router.push("./components/random-forest")}>
+          <button className="hover:text-white transition" onClick={() => router.push("/random-forest")}>
             Random Forest
           </button>
         </div>

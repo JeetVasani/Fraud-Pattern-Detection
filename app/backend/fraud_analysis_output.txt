@@ -1,0 +1,100 @@
+Summary of Flagged Transactions:
+              amount     kyc_risk  transaction_count  total_amount  ...  location_encoded  company_encoded  fraud_probability  predicted_fraud
+count    9622.000000  9622.000000        9622.000000  9.622000e+03  ...       9622.000000      9622.000000        9622.000000           9622.0
+mean   152877.874122     0.504260           7.835481  1.183635e+06  ...          1.998025         1.516836           0.998836              1.0
+std     86420.608398     0.290555           2.527647  4.253534e+05  ...          1.409611         1.119916           0.011669              0.0
+min      1006.080000     0.000000           1.000000  4.374560e+04  ...          0.000000         0.000000           0.560000              1.0
+25%     78008.040000     0.250000           6.000000  8.668115e+05  ...          1.000000         1.000000           1.000000              1.0
+50%    153730.770000     0.510000           8.000000  1.137180e+06  ...          2.000000         2.000000           1.000000              1.0
+75%    228273.302500     0.760000           9.000000  1.438651e+06  ...          3.000000         3.000000           1.000000              1.0
+max    299915.500000     1.000000          16.000000  3.248352e+06  ...          4.000000         3.000000           1.000000              1.0
+
+[8 rows x 13 columns]
+
+Fraud Counts by Transaction Type:
+txn_type
+TRANSFER      2453
+PAYMENT       2422
+WITHDRAWAL    2387
+DEPOSIT       2360
+Name: count, dtype: int64
+
+Fraud Counts by Channel:
+channel
+NEFT    1981
+RTGS    1947
+IMPS    1927
+CASH    1895
+UPI     1872
+Name: count, dtype: int64
+
+Fraud Counts by Location:
+location
+Hyderabad    2011
+Chennai      1962
+Bangalore    1910
+Mumbai       1876
+Delhi        1863
+Name: count, dtype: int64
+
+Fraud Counts by Company:
+company
+XYZ Pvt Ltd    2470
+LMN Ltd        2395
+ABC Corp       2395
+-              2362
+Name: count, dtype: int64
+
+Number of High Amount Frauds (>250k): 1692
+Number of High KYC Risk Frauds (>0.8): 1996
+Accounts with >10 Transactions: 117
+Number of Outlier Amount Frauds: 0
+
+Fraud Counts by Hour of Day:
+hour
+0     413
+1     384
+2     423
+3     381
+4     430
+5     379
+6     413
+7     431
+8     430
+9     388
+10    392
+11    426
+12    436
+13    383
+14    384
+15    400
+16    415
+17    400
+18    399
+19    417
+20    394
+21    352
+22    382
+23    370
+Name: count, dtype: int64
+
+Fraud Counts by Day of Week:
+day_of_week
+Monday       1414
+Saturday     1393
+Friday       1376
+Thursday     1374
+Sunday       1366
+Wednesday    1355
+Tuesday      1344
+Name: count, dtype: int64
+
+Accounts with >5 Unique To-Accounts: 972
+  from_account  txn_count  unique_to_accounts  total_amount     avg_amount
+0        A0001          7                   7    1073751.68  153393.097143
+2        A0003          9                   9    1299481.83  144386.870000
+3        A0004          8                   8    1283603.21  160450.401250
+4        A0005          8                   8    1477808.57  184726.071250
+5        A0006          9                   9    1147643.09  127515.898889
+
+Analysis complete. Summary saved to fraud_analysis_summary.csv

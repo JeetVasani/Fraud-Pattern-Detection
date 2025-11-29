@@ -7,7 +7,7 @@ export default function Graph() {
       <div className="w-full sm:w-[90%] md:w-[85%] lg:w-[80%] max-w-6xl mx-auto">
 
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8">
-          Graph
+          api error
         </h1>
 
       </div>

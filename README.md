@@ -8,7 +8,6 @@ The project focuses on data preprocessing, feature engineering, model training, 
 **Highlights**
 - **95.34% accuracy** on a labelled dataset of **10,000 transactions** (test split).  
 - Graph visualization of transaction networks (Neo4j + Neovis.js) to explore suspicious clusters and entity relationships.  
-- Built in the **Mumbai HACKS — Final Round**.
 
 ---
 
